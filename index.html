@@ -303,7 +303,10 @@ h+='<div class="ibox" style="margin-top:12px;background:var(--surface);border:1p
 h+='</div>';
 }}
 h+='<details><summary>📋 Full LMS Adjustment List</summary><div class="ref"><strong>Tires:</strong> Cold Pressure (LF, RF, LR, RR)<br><strong>Front:</strong> Ballast Forward, Nose Weight, Cross Weight, Steering Ratio/Offset, Brake Balance Bar, Tape Config<br><strong>Front ARB:</strong> Diameter, Arm End, Attach Left Side, Preload<br><strong>Front Corners:</strong> Spring Perch Offset, Spring Rate, Bumpstop, Packer, Bump/Rebound Stiffness, Camber, Caster, Toe-in<br><strong>Rear Corners:</strong> Spring Perch Offset, Spring Rate, Bump/Rebound Stiffness, Track Bar Height, Truck Arm Mount<br><strong>Rear:</strong> Fuel Fill, Rear End Ratio, Truck Arm Preload<br><br><span style="color:var(--red)">NOT adjustable:</span> No rear sway bar · No rear camber · No rear caster · No rear toe</div></details>';
-h+='<button class="rst" onclick="resetAll()">Clear & Start Over</button><p class="ftr">The Big Chief · Powered by Allison Racing</p><div class="ftr-bar"></div>';
+h+='<button class="rst" onclick="resetAll()">Clear & Start Over</button>';
+h+='<a href="https://paypal.me/BransonA" target="_blank" rel="noopener" style="display:block;width:100%;margin-top:12px;padding:14px;border-radius:4px;background:linear-gradient(135deg,#0070ba,#003087);color:white;text-align:center;text-decoration:none;font-family:Teko,sans-serif;font-size:17px;font-weight:600;letter-spacing:2px;text-transform:uppercase;box-shadow:0 4px 16px rgba(0,112,186,0.3)">💰 Support The Big Chief</a>';
+h+='<p style="text-align:center;margin-top:6px;font-size:11px;color:var(--text-faint)">If this tool helped your racing, consider buying the crew chief a drink</p>';
+h+='<p class="ftr">The Big Chief · Powered by Allison Racing</p><div class="ftr-bar"></div>';
 $("results").innerHTML=h}
 function resetAll(){S={tab:S.tab,corner:"",handling:"",sev:"",track:"",chip:"",show:false};$("track-sel").value="";render();window.scrollTo({top:0,behavior:"smooth"})}
 render();

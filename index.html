@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0a0a0f">
 <meta name="description" content="iRacing Late Model Stock Setup Advisor">
-<title>The Allison Crew Chief</title>
+<title>The Big Chief - Powered by Allison Racing</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏁</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -148,14 +148,13 @@ details .ref strong{color:var(--text-dim)}
 <div class="app" id="app">
 <div class="hdr">
   <div class="flag-bar"></div>
-  <div class="number">45</div>
-  <h1 class="ttl">THE <span class="accent">ALLISON</span> CREW CHIEF</h1>
-  <p class="sub">iRacing Late Model Stock · Setup Advisor</p>
+  <img src="logo.png" alt="The Big Chief - Powered by Allison Racing" style="width:min(90%,400px);height:auto;margin:0 auto 8px;display:block">
+  <p class="sub" style="font-size:11px;letter-spacing:3px;margin-top:2px;color:var(--text-ghost)">iRacing Late Model Stock · Setup Advisor</p>
   <div class="redline"></div>
   <div class="manual-tag">Manual V3 Verified</div>
 </div>
 <div class="rpm-bar"><div class="fill"></div></div>
-<div class="tabs"><button class="tab on" data-t="handling">Handling</button><button class="tab" data-t="gearing">Gearing & Brakes</button></div>
+<div class="tabs"><button class="tab on" data-t="handling">Handling</button><button class="tab" data-t="gearing">Gearing</button></div>
 <div id="p-handling">
 <div class="gap"><label class="lbl">Where in the corner?</label><div class="pills" id="corner-pills"></div></div>
 <div class="gap"><label class="lbl">How's the car handling?</label><div class="pills" id="handling-pills"></div></div>
@@ -238,7 +237,6 @@ mkPills($("corner-pills"),["Entry","Center","Exit"],"corner");mkPills($("handlin
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;S.show=false;render()});
 $("go-btn").onclick=()=>{S.show=true;render();setTimeout(()=>$("results").scrollIntoView({behavior:"smooth"}),100)};
 
-function gearAdv(tn,cl){const t=TRACKS.find(x=>x.n===tn);if(!t)return null;let g="",ch="",rpm="7,200";if(t.t==="superspeedway")g=t.n+" — drafting track. Taller ratio (~3.00–3.40) for top speed. Hit "+rpm+" RPM before braking.";else if(t.t==="intermediate")g="Intermediate at "+t.n+": Ratio ~3.40–3.80. Hit "+rpm+" RPM before braking. Shift by ear.";else g="Short track at "+t.n+": Shorter ratio (~4.00–5.00+) for exit acceleration. Hit "+rpm+" RPM before braking.";if(cl==="Standing on it hard"||cl==="Locking up / sliding"){const lk=cl==="Locking up / sliding";ch="Overworking the brakes"+(lk?" — locking up":"")+". At "+t.n+", "+t.c.toLowerCase()+". Brake Balance Bar: locking fronts=decrease, locking rears=increase. Over 50%=more front. "+(lk?"Reduce total pressure.":"Ease off earlier.");if(t.t==="short")ch+=" Downshift earlier for engine braking."}else if(cl==="Moderate pressure")ch="Good middle ground. At "+t.n+", "+t.c.toLowerCase()+". Brake Balance Bar: higher=tighter, lower=looser under braking.";else if(cl==="Barely touching it"){ch="Light braking at "+t.n+". "+t.c+". Harder initial hit with smooth trail-off improves rotation. "+(t.t==="short"?"Short tracks usually need more brake.":"Bigger tracks: this may be fine.")}return{g,ch}}
 
 function render(){
 document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.t===S.tab));
@@ -250,15 +248,62 @@ const showSev=S.corner&&S.handling&&S.handling!=="Neutral";
 $("sev-section").classList.toggle("hide",!showSev);
 $("sev-pills").querySelectorAll(".sev-btn").forEach(b=>{const v=b.dataset.v,s=SEV[v],on=S.sev===v;b.style.border="1px solid "+(on?s.color:"rgba(255,255,255,0.1)");b.style.background=on?s.color+"18":"rgba(255,255,255,0.03)";b.querySelector(".sl").style.color=on?s.color:"#908a80";b.querySelector(".sd").style.color=on?s.color+"cc":"var(--text-faint)"});
 if(S.handling==="Neutral"&&S.corner){$("neutral-msg").classList.remove("hide");$("neutral-msg").innerHTML='<div class="nbox"><h4>✅ CAR IS BALANCED</h4><p>Neutral on '+S.corner.toLowerCase()+'? You\'re in the zone. Smooth hands, progressive throttle, consistent braking. Shift by ear before 7,200 RPM.</p></div>'}else{$("neutral-msg").classList.add("hide");$("neutral-msg").innerHTML=""}
-const hOk=S.corner&&S.handling&&S.handling!=="Neutral"&&S.sev,gOk=S.track&&S.chip,can=S.tab==="handling"?hOk:gOk;
+const hOk=S.corner&&S.handling&&S.handling!=="Neutral"&&S.sev,gOk=S.track&&S.chip;
+const can=S.tab==="handling"?hOk:gOk;
 $("go-btn").disabled=!can;$("go-btn").textContent=S.show?"🏁 Update Recommendations":"🏁 Get Setup Advice";
 if(!S.show){$("results").classList.add("hide");$("results").innerHTML="";return}
 $("results").classList.remove("hide");
-let h='<div class="sep"></div><div class="sec-lbl">Crew Chief Says</div>';
+let h='<div class="sep"></div><div class="sec-lbl">Big Chief Says</div>';
 if(S.tab==="handling"&&hOk){const key=S.corner+"-"+S.handling,grp=ADV[key];if(grp){const adv=grp[S.sev],col=S.handling==="Loose"?"var(--red)":"var(--blue)",ico=S.handling==="Loose"?"⚠️":"🔒",sv=SEV[S.sev];h+='<div class="card"><div class="card-hdr"><span style="font-size:20px">'+ico+'</span><h3 style="color:'+col+'">'+grp.title+'</h3></div><div class="sev-badge" style="background:'+sv.color+'15;border:1px solid '+sv.color+'40"><span style="font-size:12px">'+sv.icon+'</span><span style="color:'+sv.color+'">'+S.sev+' severity</span></div><p class="intro-text">'+adv.intro+'</p>';adv.items.forEach((s,i)=>{h+='<div class="sug" style="animation:fadeIn .4s ease '+(i*.06)+'s both"><div style="display:flex;gap:10px;align-items:baseline;margin-bottom:4px"><span class="num">'+String(i+1).padStart(2,"0")+'</span><span class="adj">'+s.a+'</span></div><p class="tip">'+s.t+'</p></div>'});h+='</div>'}}
-if(S.tab==="gearing"&&gOk){const gd=gearAdv(S.track,S.chip);if(gd){const hard=S.chip==="Standing on it hard"||S.chip==="Locking up / sliding";h+='<div class="card"><div class="card-hdr"><span style="font-size:20px">⚙️</span><h3 style="color:var(--gold)">Gearing & Brake Strategy</h3></div><div class="ibox" style="background:rgba(212,168,39,0.05);border:1px solid rgba(212,168,39,0.15)"><div class="il" style="color:var(--gold)">Rear End Ratio</div><p>'+gd.g+'</p></div>';if(gd.ch)h+='<div class="ibox" style="background:'+(hard?"rgba(232,42,28,0.06)":"var(--surface)")+';border:1px solid '+(hard?"rgba(232,42,28,0.2)":"var(--border)")+'"><div class="il" style="color:'+(hard?"var(--red)":"var(--text-dim)")+'">'+(hard?"⚠️ Brake Warning":"Brake Strategy")+'</div><p>'+gd.ch+'</p></div>';h+='<div class="ibox" style="margin-top:12px;background:var(--surface);border:1px solid rgba(255,255,255,0.04)"><div class="il" style="color:var(--text-faint)">Quick Reference</div><p style="color:#7a7668;font-size:13px">Rev limit: 7,200 RPM · 350ci V8 · 500 bhp · 450 lb-ft · No tach · Upshift: lift · Downshift: blip · No clutch once rolling</p></div></div>'}}
+if(S.tab==="gearing"&&gOk){const t=TRACKS.find(x=>x.n===S.track);if(t){
+let g="",rpm="7,200",cl=S.chip;
+// Base gear ratio recommendation
+if(t.t==="superspeedway")g=t.n+" — drafting track. Start around 3.00–3.40 ratio for max top speed. You want to kiss the "+rpm+" RPM limiter at the end of the longest draft.";
+else if(t.t==="intermediate")g="Intermediate at "+t.n+": Start around 3.40–3.80 ratio. Set it so you hit "+rpm+" RPM just before the braking zone at end of back straight.";
+else g="Short track at "+t.n+": Start around 4.00–5.00+ ratio for max exit pull. Set it so you hit "+rpm+" RPM just before the braking zone.";
+// Chip-based gear adjustment suggestions
+let chipGear=[],chipIntro="";
+if(cl==="Standing on it hard"||cl==="Locking up / sliding"){
+const lk=cl==="Locking up / sliding";
+chipIntro=lk?"You're locking up — that's eating your tires and your lap time. Here's how to fix it:":"You're braking very hard. Let's make sure the car is working with you, not against you:";
+chipGear=[
+{a:"Rear End Ratio",t:"Try going UP 2-3 points on the gear ratio (e.g., 4.61 → 4.64). A shorter gear gives you more engine braking on decel, which takes load off the brakes and saves the chip."},
+{a:"Brake Balance Bar",t:lk?"If the fronts are locking, decrease by 1-2%. If rears are locking, increase by 1-2%. Values over 50% = more front bias. Find the balance where neither axle locks first.":"Move 1% toward the front (increase) to prevent the rear from getting light under heavy braking. This stabilizes the car on entry."},
+{a:"Driving Tip",t:"Trail-brake: hit the brakes hard initially, then smoothly release pressure as you turn in. Get completely off the brake before mid-corner. "+(t.t==="short"?"On this short track, downshift earlier to use engine braking and save the pads.":"")},
+];
+}else if(cl==="Moderate pressure"){
+chipIntro="You're in a good window on the brakes. Here's how to fine-tune the gear to match:";
+chipGear=[
+{a:"Rear End Ratio",t:"Your current ratio is probably close. If you feel like you're carrying too much speed into the corner, go UP 1-2 points (e.g., 4.61 → 4.63) for a bit more engine braking. If the car bogs on exit, go DOWN 1-2 points for more top-end pull."},
+{a:"Brake Balance Bar",t:"Fine-tune your balance bar to match how the car rotates on entry. Higher values = more front bias = tighter under braking. Lower values = more rear bias = looser under braking. Adjust by 0.5% at a time."},
+{a:"Driving Tip",t:"You're in the sweet spot. Focus on consistency — same brake point every lap, smooth trail-off into the corner. The car will tell you if it needs more or less gear."},
+];
+}else if(cl==="Barely touching it"){
+chipIntro="You're barely using the brakes. Make sure you're not leaving speed on the table:";
+chipGear=[
+{a:"Rear End Ratio",t:"If you're barely braking, you might be geared too short. Try going DOWN 2-4 points (e.g., 4.61 → 4.57) for more top speed. If you're carrying too much speed in, you may actually need to brake harder rather than change the gear."},
+{a:"Brake Balance Bar",t:"With light braking, bias matters less — but if the car still pushes on entry, drop the balance bar 0.5-1% toward the rear to help rotation."},
+{a:"Driving Tip",t:t.t==="short"?"On short tracks you typically need more brake than you think. Try hitting the brake harder initially and releasing sooner — you'll rotate better and carry more speed through the center.":"On bigger tracks, light braking can be fine — many intermediates are lift-and-roll. But make sure you're not just being timid. A firm initial hit with a smooth release usually gains time."},
+];
+}
+// Build gearing results
+h+='<div class="card"><div class="card-hdr"><span style="font-size:20px">⚙️</span><h3 style="color:var(--gold)">Gearing Strategy</h3></div>';
+h+='<div class="ibox" style="background:rgba(212,168,39,0.05);border:1px solid rgba(212,168,39,0.15)"><div class="il" style="color:var(--gold)">Rear End Ratio — Starting Point</div><p>'+g+'</p></div>';
+h+='<div class="ibox" style="background:rgba(255,255,255,0.01);border:1px solid var(--border);margin-top:4px"><div class="il" style="color:var(--text-dim)">Track Chip Profile</div><p>'+t.c+'</p></div>';
+if(chipGear.length>0){
+var hard=cl==="Standing on it hard"||cl==="Locking up / sliding";
+h+='<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);position:relative;z-index:1">';
+h+='<div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:3px;background:'+(hard?"rgba(232,42,28,0.1);border:1px solid rgba(232,42,28,0.3)":"rgba(212,168,39,0.1);border:1px solid rgba(212,168,39,0.25)")+';margin-bottom:10px"><span style="font-size:12px">'+(hard?"🛑":"🔧")+'</span><span style="font-family:Barlow Condensed,sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:'+(hard?"var(--red)":"var(--gold)")+'">Chip-Based Adjustments</span></div>';
+h+='<p class="intro-text">'+chipIntro+'</p>';
+chipGear.forEach(function(s,i){
+h+='<div class="sug" style="animation:fadeIn .4s ease '+(i*.06)+'s both"><div style="display:flex;gap:10px;align-items:baseline;margin-bottom:4px"><span class="num">'+String(i+1).padStart(2,"0")+'</span><span class="adj">'+s.a+'</span></div><p class="tip">'+s.t+'</p></div>';
+});
+h+='</div>';}
+h+='<div class="ibox" style="margin-top:12px;background:var(--surface);border:1px solid rgba(255,255,255,0.04)"><div class="il" style="color:var(--text-faint)">Quick Reference</div><p style="color:#7a7668;font-size:13px">Rev limit: 7,200 RPM · 350ci V8 · 500 bhp · 450 lb-ft · No tach · Upshift: lift throttle · Downshift: blip throttle · No clutch once rolling</p></div>';
+h+='</div>';
+}}
 h+='<details><summary>📋 Full LMS Adjustment List</summary><div class="ref"><strong>Tires:</strong> Cold Pressure (LF, RF, LR, RR)<br><strong>Front:</strong> Ballast Forward, Nose Weight, Cross Weight, Steering Ratio/Offset, Brake Balance Bar, Tape Config<br><strong>Front ARB:</strong> Diameter, Arm End, Attach Left Side, Preload<br><strong>Front Corners:</strong> Spring Perch Offset, Spring Rate, Bumpstop, Packer, Bump/Rebound Stiffness, Camber, Caster, Toe-in<br><strong>Rear Corners:</strong> Spring Perch Offset, Spring Rate, Bump/Rebound Stiffness, Track Bar Height, Truck Arm Mount<br><strong>Rear:</strong> Fuel Fill, Rear End Ratio, Truck Arm Preload<br><br><span style="color:var(--red)">NOT adjustable:</span> No rear sway bar · No rear camber · No rear caster · No rear toe</div></details>';
-h+='<button class="rst" onclick="resetAll()">Clear & Start Over</button><p class="ftr">The Allison Crew Chief · Late Model Stock</p><div class="ftr-bar"></div>';
+h+='<button class="rst" onclick="resetAll()">Clear & Start Over</button><p class="ftr">The Big Chief · Powered by Allison Racing</p><div class="ftr-bar"></div>';
 $("results").innerHTML=h}
 function resetAll(){S={tab:S.tab,corner:"",handling:"",sev:"",track:"",chip:"",show:false};$("track-sel").value="";render();window.scrollTo({top:0,behavior:"smooth"})}
 render();

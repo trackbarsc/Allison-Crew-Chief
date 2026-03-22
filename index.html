@@ -824,6 +824,25 @@ function updateSilhouette(){$("silhouette").innerHTML=SILHOUETTES[S.car]||""}
 
 render();
 if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+
+// ═══ SOURCE PROTECTION ═══
+// Disable right-click
+document.addEventListener("contextmenu",function(e){e.preventDefault()});
+// Disable keyboard shortcuts for view source / dev tools
+document.addEventListener("keydown",function(e){
+  // F12
+  if(e.key==="F12"){e.preventDefault();return false}
+  // Ctrl+Shift+I (dev tools)
+  if(e.ctrlKey&&e.shiftKey&&e.key==="I"){e.preventDefault();return false}
+  // Ctrl+Shift+J (console)
+  if(e.ctrlKey&&e.shiftKey&&e.key==="J"){e.preventDefault();return false}
+  // Ctrl+U (view source)
+  if(e.ctrlKey&&e.key==="u"){e.preventDefault();return false}
+  // Ctrl+Shift+C (inspect element)
+  if(e.ctrlKey&&e.shiftKey&&e.key==="C"){e.preventDefault();return false}
+});
+// Disable text selection on the page (optional — prevents copy/paste of advice)
+document.addEventListener("selectstart",function(e){if(e.target.tagName!=="INPUT"&&e.target.tagName!=="TEXTAREA")e.preventDefault()});
 </script>
 </body>
 </html>
